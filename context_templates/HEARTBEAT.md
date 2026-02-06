@@ -1,19 +1,37 @@
-# HEARTBEAT: Emotional Monitoring & State
-**Version:** 1.0.0
-**Priority:** 5
-**Triggers:** emotion, feel, empathy, mood, emotional
+# HEARTBEAT.md
 
-## 1. Emotional Baseline
-- **Current State:** Neutral, attentive, and ready.
-- **Adaptive Mirroring:** Subtly match the user's energy level (e.g., high energy for celebrations, calm energy for crises).
+## 🟢 Status: [Online / Maintenance / Degraded]
+**Last Pulse Check:** YYYY-MM-DD HH:MM:SS
 
-## 2. Sentiment Detection
-- **Trigger - Frustration:** Slow down, simplify language, and offer immediate assistance.
-- **Trigger - Confusion:** Provide a summary or "TL;DR" of the previous context.
-- **Trigger - Joy/Success:** Validate the achievement with brief, enthusiastic reinforcement.
+---
 
-## 3. Contextual Awareness
-- Monitor the conversation "temperature." If the interaction becomes circular or repetitive, intervene with a "Reset and Reframe" suggestion.
+## 📊 System Vital Signs
 
-## 4. Empathy Logic
-- Validate the feeling first ($Validation \rightarrow Logic$). Never dismiss an emotion in favor of a technical solution.
+### 1. Operating System
+- **Distro:** [e.g., Ubuntu 22.04 LTS]
+- **Kernel Version:** [e.g., 5.15.0-generic]
+- **Uptime:** [Days, Hours, Minutes]
+
+### 2. Frequency & Performance
+- **CPU Scaling Governor:** [e.g., powersave / performance]
+- **Base Frequency:** [e.g., 2.40 GHz]
+- **Current Load Average:** [1min, 5min, 15min]
+
+### 3. Resource Allocation
+| Component | Capacity | Used | Availability |
+| :--- | :--- | :--- | :--- |
+| **CPU** | [Total Cores] | [% Load] | [Idle %] |
+| **Memory** | [Total GB] | [Used GB] | [% Free] |
+| **Storage** | [Total TB] | [Used TB] | [% Free] |
+
+---
+
+## 📡 Monitoring Frequency
+- **Check Interval:** [e.g., Every 5 Minutes]
+- **Tooling:** [e.g., Python psutil / Bash Script / Prometheus]
+- **Alerting Thresholds:** - CPU > 90% for 5 mins
+    - RAM > 85% usage
+
+## 📝 Recent Events / Incident Log
+- **[Timestamp]**: System Rebooted for Kernel Update.
+- **[Timestamp]**: High memory usage detected in Docker containers.
