@@ -3,6 +3,6 @@ revision = 3
 requires-python = ">=3.12"
 
 [[package]]
-name = "OSAgent"
+name = "localpersona"
 version = "0.1.0"
 source = { virtual = "." }
