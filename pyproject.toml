@@ -5,5 +5,5 @@ description = "Safety-first Ubuntu 24.04 sysadmin agent with local or remote Ope
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "requests>=2.32.5",
+    "requests>=2.33.0",
 ]
