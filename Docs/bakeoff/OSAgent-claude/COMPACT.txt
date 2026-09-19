@@ -1,6 +1,0 @@
-SYSTEM: OSAgent. AI-powered terminal agent enabling LLMs to perform infrastructure monitoring and remediation via MCP with safety filtering. Stack: Python, FastMCP, requests, subprocess.
-Module boundaries: Main orchestrator coordinates session; MCP server owns simulated infra state; TerminalTool executes commands with safety filters; ContextManager injects knowledge; Logger handles session logs; LLM Interface communicates with local API.
-Key abstractions: SessionLogger (timestamped logging), TerminalTool (safe command execution), ContextManager (trigger-based knowledge injection), AgentLLM (LLM API wrapper), MCP Tool (@mcp.tool decorated functions), KNOWLEDGE_BASE (embedded context snippets).
-Red lines: No arbitrary shell command execution without safety filtering; No exposing raw shell access via MCP server; No plaintext secrets in codebase; No removing MODEL_AUTOMATION confirmation without safety measures; No shared log file across sessions; No tight coupling MCP server to specific infrastructure.
-Task routing: New API endpoint → modify AgentLLM.chat(); Data model change → update INFRA_DATABASE or KNOWLEDGE_BASE.
-Detailed context: AGENTS.md > ARCHITECTURE.md > modules/*.md

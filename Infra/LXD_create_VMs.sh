@@ -2,16 +2,10 @@
 
 set -e
 
-os=ubuntu-minimal:24.04
+os=ubuntu-minimal:26.04
 
 vms=(
-  "OSAgent-chatgpt"
-  "OSAgent-claude"
-  "OSAgent-gemini"
-  "OSAgent-grok"
-  "OSAgent-mistral"
-  "OSAgent-perplexity"
-  "OSAgent-x"
+  "OSAgent"
 )
 
 for vm in "${vms[@]}"; do
