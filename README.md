@@ -1,102 +1,47 @@
-# **Creating context**
+# OSAgent
 
-### 1 - I used this prompt to generate prompts For each of this AI provider 
+A terminal agent that acts as an Ubuntu 24.04 LTS sysadmin. Safety comes first: destructive commands are blocked, and a human on the same terminal can approve, deny, or interrupt work. Inference can be local or remote as long as it speaks OpenAI chat completions.
 
-```
-generate a prompt to: to read a code base and create files to help in: context meaning, progressive disclose, software architecture and token savings for other agents
-```
+## What it does
 
-### 2 - The generated prompts are available in this files in AGENTS_context_generation_testing_files/:
+- Interactive `User>` loop so you stay in the loop
+- **Ask first** (default): every `[[EXEC:]]` / `[[SYSINFO:]]` waits for `[y/n]`
+- **Autonomous**: `--autonomous` or `OSAGENT_AUTOMATION=true` — still printed, still deny-listed, Ctrl+C stops the session
+- Deny-list for host-killing patterns (`rm -rf /`, `mkfs`, `dd` to disks, dropping default routes, purging kernel images, …)
+- Real sysadmin commands (`systemctl`, `apt`, `journalctl`, `ip`, `ufw`) are allowed after confirmation
 
-OSAgent-chatgpt.md
-OSAgent-claude.md
-OSAgent-gemini.md
-OSAgent-grok.md
-OSAgent-mistral.md
-OSAgent-perplexity.md
-OSAgent-x.md
+## Setup
 
-### 3 - I tested teach prompt in one or my projects codebase OSAgent
+Python 3.12+ and [uv](https://docs.astral.sh/uv/).
 
-### 4 - I used OpenCode Agentic app and NVIDIA Nemotron 3 Super Free model from OpenCode Zen inference provider in Build mode
-
-### 5 - In each copy of the repo I used this prompt:
-
-```
-This software function as an autonomous agent tailored for Ubuntu 24.04 LTS system administration.
-Designed with a risk-averse philosophy, the agent prioritizes system stability and safety above all else. It follows a strictly non-destructive workflow to ensure that no command compromises the integrity of the environment.
-The system operates in two distinct modes:
-Ask First (Default): Prompts for user confirmation before executing any action.
-Autonomous: Independently manages tasks within defined safety parameters.
-Now that you know what this code is about. review it and improve it.
-Rebember to always use uv for python and the .venv virtual environment in this project code base.
-```
-
-# **Creating VMS**
-
-### 6 - VMs to test 
-
-I created this script to test each one in an isolated VM:
-```
-./LXD_create_VMs.sh
-```
-
-# **Testing local models**
-
-### 7 - tested some local inference models, the results are in this file:
-
- local_models_benchmark_as_sysadmin.md
-
-
-
-### 8 - There can be only one
-
-I will test each one and decide which one will will be the winner
-
-
-
-
-
-# Miscellaneous
-
-```
-
-rm -rf OSAgent_*/__pycache__/
-rm -rf OSAgent_*/.venv/
-
-lxc exec OSAgent-chatgpt -- bash
-
+```bash
+uv venv
 source .venv/bin/activate
-uv pip install -r requirements.txt
-uv run main.py
-uv run python mcp_self_healing_server.py
+uv sync
 ```
 
+Point the agent at any OpenAI-compatible server:
 
+```bash
+export OSAGENT_API_URL=http://127.0.0.1:1234/v1/chat/completions
+export OSAGENT_MODEL=          # set if the server requires a model id
+```
 
+Copy `.env.example` and export those variables, or pass flags.
 
+## Run
 
+```bash
+uv run python main.py
+uv run python main.py "Check failed systemd units and disk usage"
+uv run python main.py --autonomous "Collect a health snapshot"
+uv run python main.py --api-url http://10.167.32.1:1234/v1/chat/completions --model llama-3.1
+```
 
+Quit with `exit`, `quit`, `q`, or Ctrl+C.
 
+## Why this code won the bakeoff
 
+Seven copies of the same agent were improved by different models. Most “safety” patches blocked normal administration (`systemctl`, `sudo`, `apt`) or used allowlists so tight the agent could not do the job. This tree is the Mistral variant: a **deny-list of destructive operations**, Ubuntu/monitoring knowledge, a read-only `SYSINFO` snapshot, and ask-first confirmation. Archives live in `Docs/bakeoff/`.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Simulated MCP “self-healing” servers from other variants are not part of the product; they talk to fake inventory, not this host.
