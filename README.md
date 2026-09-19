@@ -1,6 +1,6 @@
 # OSAgent
 
-A terminal agent that acts as an Ubuntu 24.04 LTS sysadmin. Safety comes first: destructive commands are blocked, and a human on the same terminal can approve, deny, or interrupt work. Inference can be local or remote as long as it speaks OpenAI chat completions.
+A terminal agent that acts as a Linux sysadmin. Safety comes first: destructive commands are blocked, and a human on the same terminal can approve, deny, or interrupt work. Inference can be local or remote as long as it speaks OpenAI chat completions.
 
 ## What it does
 
@@ -8,7 +8,7 @@ A terminal agent that acts as an Ubuntu 24.04 LTS sysadmin. Safety comes first: 
 - **Ask first** (default): every `[[EXEC:]]` / `[[SYSINFO:]]` waits for `[y/n]`
 - **Autonomous**: `--autonomous` or `OSAGENT_AUTOMATION=true` — still printed, still deny-listed, Ctrl+C stops the session
 - Deny-list for host-killing patterns (`rm -rf /`, `mkfs`, `dd` to disks, dropping default routes, purging kernel images, …)
-- Real sysadmin commands (`systemctl`, `apt`, `journalctl`, `ip`, `ufw`) are allowed after confirmation
+- Real sysadmin commands (`systemctl`, `journalctl`, `ip`, and the host's package manager) are allowed after confirmation
 
 ## Setup
 
@@ -42,6 +42,6 @@ Quit with `exit`, `quit`, `q`, or Ctrl+C.
 
 ## Why this code won the bakeoff
 
-Seven copies of the same agent were improved by different models. Most “safety” patches blocked normal administration (`systemctl`, `sudo`, `apt`) or used allowlists so tight the agent could not do the job. This tree is the Mistral variant: a **deny-list of destructive operations**, Ubuntu/monitoring knowledge, a read-only `SYSINFO` snapshot, and ask-first confirmation. Archives live in `Docs/bakeoff/`.
+Seven copies of the same agent were improved by different models. Most “safety” patches blocked normal administration (`systemctl`, `sudo`, package managers) or used allowlists so tight the agent could not do the job. This tree is the Mistral variant: a **deny-list of destructive operations**, Linux/monitoring knowledge, a read-only `SYSINFO` snapshot, and ask-first confirmation. Archives live in `Docs/bakeoff/`.
 
 Simulated MCP “self-healing” servers from other variants are not part of the product; they talk to fake inventory, not this host.

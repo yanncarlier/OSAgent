@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Ubuntu 24.04 sysadmin agent: deny-list safety, ask-first HITL, OpenAI-compatible LLM."""
+"""Linux sysadmin agent: deny-list safety, ask-first HITL, OpenAI-compatible LLM."""
 
 from __future__ import annotations
 
@@ -53,30 +53,30 @@ KNOWLEDGE_BASE = {
 - **Performance:** Prefer `awk` or `sed` for large file processing.
 """,
     },
-    "Ubuntu2404Admin": {
-        "description": "Ubuntu 24.04 LTS specific system administration and maintenance procedures.",
+    "LinuxAdmin": {
+        "description": "Cross-distribution Linux system administration and maintenance procedures.",
         "triggers": [
-            "ubuntu",
-            "24.04",
             "apt",
+            "dnf",
+            "yum",
+            "pacman",
+            "zypper",
             "systemd",
             "service",
             "boot",
             "kernel",
             "upgrade",
-            "netplan",
             "firewall",
-            "ufw",
-            "snap",
+            "package",
         ],
         "content": """
-### SPECIALIZED CONTEXT: UBUNTU 24.04 LTS SYSTEM ADMINISTRATION ###
-- **Package Management:** Use `apt update && apt upgrade -y` for regular updates. Prefer `apt install --only-upgrade` for specific packages.
+### SPECIALIZED CONTEXT: LINUX SYSTEM ADMINISTRATION ###
+- **Distribution Detection:** Inspect `/etc/os-release` before choosing distribution-specific commands or configuration paths.
+- **Package Management:** Use the host's native package manager: `apt` (Debian/Ubuntu), `dnf` (Fedora/RHEL), `pacman` (Arch), or `zypper` (SUSE). Refresh metadata and review the planned changes before upgrading.
 - **Service Management:** Use `systemctl` commands: `systemctl status [service]`, `systemctl restart [service]`, `systemctl enable [service]`.
-- **Boot & Kernel:** Do not remove old kernels until verifying new one works. Use `sudo apt autoremove --purge` to clean old kernels safely.
-- **Network Configuration:** Use Netplan (`/etc/netplan/*.yaml`). Apply changes with `sudo netplan apply`.
-- **Firewall:** UFW is default. Enable with `sudo ufw enable`, allow services with `sudo ufw allow [service]`.
-- **Snap Packages:** List with `snap list`, refresh with `sudo snap refresh`. Be cautious with classic snaps.
+- **Boot & Kernel:** Do not remove old kernels until verifying the new one works. Use the distribution's package tools to identify unused kernels before removal.
+- **Network Configuration:** Identify the active network stack first (for example NetworkManager, systemd-networkd, or a distribution-specific tool) and validate the configuration before applying it.
+- **Firewall:** Identify the active firewall backend (`firewalld`, `nftables`, or `ufw`) before changing rules. Preserve an active management connection.
 - **Logs:** Use `journalctl` for system logs. `journalctl -u [service]` for service-specific logs.
 - **Hardware Info:** Use `lscpu`, `lsblk`, `lspci`, `lsusb` for hardware inspection.
 - **Disk Management:** Use `lsblk`, `df -h`, `du -sh`. For partitioning, prefer `parted` or `gparted`.
@@ -201,7 +201,7 @@ class TerminalTool:
 
     @staticmethod
     def get_system_info() -> str:
-        """Read-only snapshot of Ubuntu host health."""
+        """Read-only snapshot of Linux host health."""
         try:
             info = []
             info.append("=== SYSTEM INFORMATION ===")
@@ -332,7 +332,9 @@ def confirm_execution(prompt: str) -> bool:
 def system_prompt() -> str:
     mode = "AUTONOMOUS" if MODEL_AUTOMATION else "ASK FIRST"
     return (
-        "You are a risk-averse Ubuntu 24.04 LTS system administrator agent.\n"
+        "You are a risk-averse Linux system administrator agent.\n"
+        "First identify the distribution and its supported tooling before proposing "
+        "distribution-specific commands.\n"
         "Prefer read-only diagnosis before any change. Never suggest destroying "
         "disks, wiping /, dropping default routes, or purging kernel packages.\n\n"
         "**TOOL USE:**\n"
@@ -454,7 +456,7 @@ def run_agentic_session(initial_prompt: Optional[str] = None) -> None:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description=(
-            "OSAgent: Ubuntu sysadmin agent. Ask-first by default; "
+            "OSAgent: Linux sysadmin agent. Ask-first by default; "
             "use --autonomous only inside a disposable host."
         )
     )
