@@ -1,5 +1,7 @@
 # OSAgent
 
+## Terminal Linux sysadmin agent
+
 A terminal agent that acts as a Linux sysadmin. Safety comes first: destructive commands are blocked, and a human on the same terminal can approve, deny, or interrupt work. Inference can be local or remote as long as it speaks OpenAI chat completions.
 
 ## What it does
